@@ -8,23 +8,22 @@ class LoginUserModel {
   String? deviceID;
   String? deviceModel;
 
-  LoginUserModel({
-    this.message,
-    this.token,
-    this.staff_ID,
-    this.deviceID,
-    this.deviceModel
-  });
+  LoginUserModel(
+      {this.message,
+      this.token,
+      this.staff_ID,
+      this.deviceID,
+      this.deviceModel});
 
-  LoginUserModel.fromJson(DynamicMap json) {
+  LoginUserModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     token = json['token'];
   }
 
   DynamicMap toJson() {
-    final DynamicMap data =   DynamicMap();
-    data['staff_ID'] =  staff_ID;
-    data['deviceID'] =  deviceID;
+    final DynamicMap data = DynamicMap();
+    data['staff_ID'] = staff_ID;
+    data['deviceID'] = deviceID;
     data['deviceModel'] = deviceModel;
     return data;
   }

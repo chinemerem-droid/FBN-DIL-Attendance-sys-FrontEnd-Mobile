@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_ams_mobile_official/feautures/history/controller/history_controller.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_ams_mobile_official/feautures/home/controller/check_in_controller.dart';
 import 'package:frontend_ams_mobile_official/feautures/home/controller/check_out_controller.dart';
 import 'package:frontend_ams_mobile_official/feautures/login/controller/log_in_controller.dart';
@@ -7,62 +7,59 @@ import 'package:frontend_ams_mobile_official/helpers/constants/color.dart';
 import 'package:get/get.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 
-import '../../feautures/history/model/history_model.dart';
-
 class SwipeButton extends StatelessWidget {
-  SwipeButton({super.key});
+  SwipeButton({Key? key}) : super(key: key);
 
-  CheckInController checkInController = Get.find();
-  CheckOutController checkOutController = Get.find();
-  LogInController logInController = Get.find();
-  HistoryController controller = Get.find();
+  final CheckInController checkInController = Get.find();
+  final CheckOutController checkOutController = Get.find();
+  final LogInController logInController = Get.find();
 
-  RxBool isLoading = true.obs;
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return logInController.isCheckedIn.value
-          ? SlideAction(
-              elevation: 0,
-              sliderRotate: true,
-              innerColor: Colors.white,
-              outerColor: primaryColor,
-              text: 'Swipe left to check out',
-              textStyle: const TextStyle(fontSize: 15, color: Colors.white),
-              reversed: true,
-              animationDuration: const Duration(milliseconds: 500),
-              onSubmit: () async {
-                await checkOutController.checkOutUser();
-                controller.addAttendanceRecord(AttendanceHistoryModel(
-                  staffID: 'Staff001',
-                  entryTime: '',
-                  exitTime: DateTime.now().toIso8601String(),
-                  date: DateTime.now(),
-                  month: DateTime.now().month,
-                  year: DateTime.now().year,
-                ));
-              },
-            )
-          : SlideAction(
-              elevation: 0,
-              sliderRotate: true,
-              innerColor: Colors.white,
-              outerColor: primaryColor,
-              text: 'Swipe right to check in',
-              textStyle: const TextStyle(fontSize: 15, color: Colors.white),
-              animationDuration: const Duration(milliseconds: 500),
-              onSubmit: () async {
-                await checkInController.checkInUser();
-                controller.addAttendanceRecord(AttendanceHistoryModel(
-                  staffID: 'Staff001',
-                  entryTime: DateTime.now().toIso8601String(),
-                  exitTime: '',
-                  date: DateTime.now(),
-                  month: DateTime.now().month,
-                  year: DateTime.now().year,
-                ));
-              },
-            );
+      bool isCheckedIn = logInController.isCheckedIn.value;
+
+      return SlideAction(
+        elevation: 0,
+        sliderRotate: true,
+        innerColor: isCheckedIn ? primaryColor : Colors.white,
+        submittedIcon: CircularProgressIndicator(
+          color: isCheckedIn ? primaryColor : Colors.white,
+        ),
+        outerColor: isCheckedIn ? Colors.white : primaryColor,
+        reversed: isCheckedIn,
+        animationDuration: const Duration(milliseconds: 500),
+        onSubmit: () async {
+          // DateTime now = DateTime.now();
+
+          if (isCheckedIn) {
+            await checkOutController.checkOutUser();
+          } else {
+            await checkInController.checkInUser();
+          }
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50),
+            border: Border.all(
+              width: 1,
+              color: isCheckedIn ? primaryColor : Colors.transparent,
+            ),
+            color: Colors.transparent,
+          ),
+          child: Center(
+            child: Text(
+              isCheckedIn
+                  ? 'Swipe left to check out'
+                  : 'Swipe right to check in',
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: isCheckedIn ? primaryColor : Colors.white,
+              ),
+            ),
+          ),
+        ),
+      );
     });
   }
 }

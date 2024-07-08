@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend_ams_mobile_official/feautures/history/controller/history_controller.dart';
+import 'package:frontend_ams_mobile_official/feautures/attendanceHistory/controller/history_controller.dart';
+import 'package:frontend_ams_mobile_official/feautures/attendanceHistory/service/History_service.dart';
 import 'package:frontend_ams_mobile_official/feautures/home/controller/check_in_controller.dart';
 import 'package:frontend_ams_mobile_official/feautures/home/controller/check_out_controller.dart';
 import 'package:frontend_ams_mobile_official/feautures/home/controller/location_controller.dart';
@@ -12,6 +13,7 @@ import 'package:frontend_ams_mobile_official/feautures/login/controller/log_in_c
 import 'package:frontend_ams_mobile_official/feautures/login/repository/Login_repository.dart';
 import 'package:frontend_ams_mobile_official/feautures/login/service/login_service.dart';
 import 'package:get_it/get_it.dart';
+import '../../feautures/attendanceHistory/repository/history_repository.dart';
 import 'dio_client.dart';
 
 GetIt getIt = GetIt.instance;
@@ -62,6 +64,12 @@ Future<void> apiServiceLocator() async {
     debugPrint('LOCATION CONTROLLER registered');
 
     //============================================================================================
+
+    getIt.registerSingleton(HistoryService(dioClient: getIt<DioClient>()));
+    debugPrint('HISTORY SERVICE registered');
+
+    getIt.registerSingleton(HistoryRepository(getIt.get<HistoryService>()));
+    debugPrint('HISTORY REPOSITORY registered');
 
     getIt.registerSingleton(HistoryController());
     debugPrint('HISTORY CONTROLLER registered');

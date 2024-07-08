@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
+import 'package:frontend_ams_mobile_official/helpers/functions/navigation.dart';
+import 'package:frontend_ams_mobile_official/helpers/services/storage_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -12,16 +14,37 @@ class WelcomeController extends GetxController {
   var daysInaMonth = <DateTime>[].obs;
   var monthsInYear = <DateTime>[].obs;
 
-  var pageController = PageController(viewportFraction: 0.2).obs;
-  var monthController = PageController(initialPage: DateTime.now().month).obs;
+  final StorageService _storage = StorageService();
+  var pageController = PageController(
+    viewportFraction: 0.2,
+  ).obs;
+  var monthController =
+      PageController(initialPage: DateTime.now().month - 1).obs;
 
   var latitude = 0.0.obs;
   var longitude = 0.0.obs;
   var isLoading = false.obs;
 
-  var currentTime = ''.obs;
-  Timer? _timer;
+  //===================================================================================================================
 
+// fordays in month month
+
+  DateTime now = DateTime.now();
+  int get daysInMonth => DateTime(now.year, now.month + 1, 0).day;
+  RxInt selectedDay = DateTime.now().day.obs;
+
+  void selectDay(int day) {
+    selectedDay.value = day;
+  }
+
+  String getDayNameForMonth(int day) {
+    DateTime date = DateTime(now.year, now.month, day);
+    return DateFormat('EEE').format(date); // Abbreviated day of the week
+  }
+
+  //===================================================================================================================
+
+  var currentTime = ''.obs;
   RxString deviceID = ''.obs;
   RxString deviceModel = ''.obs;
 
@@ -30,27 +53,46 @@ class WelcomeController extends GetxController {
   late LocationPermission permission;
   String currentAddress = '';
 
+  String formatDate(DateTime date) {
+    final DateFormat dateFormatter = DateFormat.yMMMd().add_jm();
+    return dateFormatter.format(date);
+  }
+
+  String formatTime(DateTime? time) {
+    if (time == null) return '---';
+    final DateFormat timeFormatter = DateFormat('hh:mm a');
+    return timeFormatter.format(time);
+  }
+
   //===================================================================================================================
 
   @override
   void onInit() {
     super.onInit();
     getCurrentLocation();
+    getGreeting();
     checkInStatus();
     generateMonthsList();
     getDaysInMonth();
     updateCurrentTime();
-    startTimer();
-    debugPrint('========================================WelcomeController initailized');
+    debugPrint(
+        '========================================WelcomeController initailized PRESENT date is ${DateTime.now().month}');
+    debugPrint(
+        '========================================WelcomeController initailized PRESENT CURRENT  date is ${currentDate.value.month}');
+  }
+
+  String getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) {
+      return 'Good Morning ';
+    } else if (hour < 16) {
+      return 'Good Afternoon ';
+    } else {
+      return 'Good Evening ';
+    }
   }
 
   //===================================================================================================================
-
-  void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      updateCurrentTime();
-    });
-  }
 
   void updateCurrentTime() {
     final DateTime now = DateTime.now();
@@ -118,8 +160,18 @@ class WelcomeController extends GetxController {
     getDaysInMonth();
   }
 
-  void setCurrentMonth(int index) {
-    currentDate.value = DateTime(currentDate.value.year, index + 1, 1);
+  // void setCurrentMonth(int index) {
+  //   currentDate.value = DateTime(currentDate.value.year, index + 1, index + 1);
+  //   debugPrint(
+  //       '===================================================================================================CURRENT MONTH IS ${currentDate.value}');
+  //   getDaysInMonth();
+  // }
+
+  void setCurrentMonth() {
+    currentDate.value = DateTime(
+        currentDate.value.year, currentDate.value.month, currentDate.value.day);
+    debugPrint(
+        '===================================================================================================CURRENT MONTH IS ${currentDate.value}');
     getDaysInMonth();
   }
 
@@ -162,6 +214,8 @@ class WelcomeController extends GetxController {
     bool serviceEnabled;
     LocationPermission permission;
 
+    debugPrint(
+        '================================================= GET CURRENT LOCATION IS INITIALIZED');
     // Check if location services are enabled
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
@@ -198,14 +252,11 @@ class WelcomeController extends GetxController {
 
   //===================================================================================================================
 
-  String _formatDateTime(DateTime dateTime) {
-    return "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}:${dateTime.second.toString().padLeft(2, '0')}";
-  }
-
   //===================================================================================================================
 
   void checkInStatus() async {
     Position position = await Geolocator.getCurrentPosition();
+    String staffId = await _storage.getString('staff_ID');
 
     debugPrint(
         '=============================DEVICE ID : ${_authController.deviceID}');
@@ -213,8 +264,7 @@ class WelcomeController extends GetxController {
     debugPrint(
         '=============================DEVICE MODEL : ${_authController.deviceModel}');
 
-    debugPrint(
-        '=============================STAFF ID :${_authController.staff_ID.text} ');
+    debugPrint('=============================STAFF ID :$staffId ');
 
     debugPrint(
         '=============================DEVICE LATITUDE : ${position.latitude.toString()}');
@@ -225,9 +275,23 @@ class WelcomeController extends GetxController {
 
   //===================================================================================================================
 
-  @override
-  void onClose() {
-    _timer?.cancel();
-    super.onClose();
+  var checkInTimes = <String>[].obs; // List to store check-in times
+
+  void addCheckInTime() {
+    updateCurrentTime();
+    checkInTimes.add(currentTime.value);
   }
+
+  void signOut() async {
+    _storage.deleteValue('token');
+    _storage.deleteValue('isLoggedIn');
+    pushReplacement(page: 'Login');
+  }
+
+  // @override
+  // void onClose() {
+  //   _timer?.cancel();
+  //   getCurrentLocation();
+  //   super.onClose();
+  // }
 }

@@ -19,8 +19,7 @@ class InfoWaringBar extends StatelessWidget {
               decoration: BoxDecoration(
                 color: secondaryColor,
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                    color: Colors.red, width: 1),
+                border: Border.all(color: Colors.red, width: 1),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -28,8 +27,8 @@ class InfoWaringBar extends StatelessWidget {
                 children: [
                   Text(
                     text1,
-                    style:
-                        TextStyle(color: const Color.fromARGB(255, 29, 29, 29)),
+                    style: const TextStyle(
+                        color:   Color.fromARGB(255, 29, 29, 29)),
                   ),
                   Text(
                     text2,

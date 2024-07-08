@@ -4,7 +4,7 @@ import 'package:frontend_ams_mobile_official/helpers/constants/color.dart';
 class InfoBarVerified extends StatelessWidget {
   final String text1;
   final String text2;
-  InfoBarVerified({super.key, required this.text1, required this.text2});
+ const InfoBarVerified({super.key, required this.text1, required this.text2});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class InfoBarVerified extends StatelessWidget {
                   Text(
                     text1,
                     style: const TextStyle(
-                        color: const Color.fromARGB(255, 29, 29, 29)),
+                        color:   Color.fromARGB(255, 29, 29, 29)),
                   ),
                   Text(
                     text2,

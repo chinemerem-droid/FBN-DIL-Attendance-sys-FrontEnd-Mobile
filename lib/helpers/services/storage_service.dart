@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend_ams_mobile_official/helpers/services/secure_storage_service.dart';
 
@@ -10,17 +11,20 @@ class StorageService {
   }
 
   Future<int?> getInteger(String key) async {
-    await _secureStorageService.getIntValue(key);
-    return null;
+    var result = await _secureStorageService.getIntValue(key);
+    return result;
+
+    ///hmmmmmmmmmmmm
   }
 
   Future saveString(String key, String Value) async {
     await _secureStorageService.setStringValue(key, Value);
   }
 
-  Future<String?> getString(String key) async {
-    await _secureStorageService.getStringValue(key);
-    return null;
+  Future<String> getString(String key) async {
+    return await _secureStorageService.getStringValue(key);
+
+    ///hmmmmmmmmmmmm
   }
 
   Future saveBoolean(String key, bool value) async {
@@ -56,7 +60,7 @@ class StorageService {
             storedArrayString.split(',').map((str) => int.parse(str)).toList();
         return storedArray;
       } catch (e) {
-        print('Error parsing stored array: $e');
+        debugPrint('Error parsing stored array: $e');
         // handle the error , perhaps return a default value or show an error message
         return <int>[];
       }

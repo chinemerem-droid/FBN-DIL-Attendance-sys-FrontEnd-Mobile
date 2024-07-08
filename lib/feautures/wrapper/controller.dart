@@ -23,19 +23,18 @@ class WrapperController extends GetxController {
     // await _storage.clearOldData();
     bool _isAuthenticated = await _storage.getBoolean('isLoggedIn');
 
-    final pref = await SharedPreferences.getInstance();
-    bool _isFirstRun = pref.getBool('first_run') ?? true;
 
-    if (_isFirstRun) {
+    final pref = await SharedPreferences.getInstance();
+    //bool _isFirstRun = pref.getBool('first_run') ?? true;
+
+    if (!_isAuthenticated) {
       await _storage.clearOldData();
       await pref.clear();
-      pref.setBool('first_run', false);
+      // pref.setBool('first_run', false);
       pushReplacement(page: '/Login');
     } else if (_isAuthenticated) {
       // even if the user is authenticated he/ she still has to login
-      pushReplacement(page: '/Login');
-    } else {
-      pushReplacement(page: '/Login');
+      pushReplacement(page: '/Welcome');
     }
   }
 

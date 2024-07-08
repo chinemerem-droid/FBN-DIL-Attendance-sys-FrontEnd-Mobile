@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:frontend_ams_mobile_official/feautures/login/models/user_model.dart';
 import 'package:frontend_ams_mobile_official/feautures/login/repository/Login_repository.dart';
 import 'package:frontend_ams_mobile_official/helpers/functions/api_service_locator.dart';
+import 'package:frontend_ams_mobile_official/helpers/functions/navigation.dart';
 import 'package:frontend_ams_mobile_official/helpers/services/storage_service.dart';
 import 'package:get/get.dart';
 
@@ -19,6 +20,7 @@ class LogInController extends GetxController {
   RxBool canSubmit = false.obs;
   RxBool passwordVisibility = true.obs;
   RxBool isFocused = false.obs;
+  DateTime now = DateTime.now();
 
   TextEditingController staff_ID = TextEditingController();
   RxString deviceID = ''.obs;
@@ -48,8 +50,6 @@ class LogInController extends GetxController {
   Future<void> initDeviceInfo() async {
     final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
-    debugPrint(4.toString());
-
     try {
       if (Platform.isAndroid) {
         final androidInfo = await deviceInfoPlugin.androidInfo;
@@ -71,7 +71,7 @@ class LogInController extends GetxController {
 
   Future<void> authenticateUser() async {
     isProcessing.value = true;
-    debugPrint("Processing  ${isProcessing}");
+    debugPrint("Processing  $isProcessing");
 
     try {
       var loginData = LoginUserModel(
@@ -81,7 +81,12 @@ class LogInController extends GetxController {
       var result = await userRepository.logIn(loginData: loginData);
       if (result.token != '') {
         isProcessing.value = false;
-        _storage.saveBoolean("isLoggedIn", true);
+        await _storage.saveString('token', result.token!);
+        await _storage.saveString('staff_ID', staff_ID.text);
+    
+
+        await _storage.saveBoolean('isLoggedIn', true);
+        pushReplacement(page: '/Welcome');
       }
     } catch (e) {
       isProcessing.value = false;

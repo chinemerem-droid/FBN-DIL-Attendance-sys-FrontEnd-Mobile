@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frontend_ams_mobile_official/feautures/wrapper/wrapper_screen.dart';
+import 'package:frontend_ams_mobile_official/helpers/constants/color.dart';
 import 'package:get/get.dart';
 import 'helpers/functions/api_service_locator.dart';
 import 'helpers/functions/app_pages.dart';
@@ -18,15 +20,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "frontend ams mobile official",
-      home: WrapperScreen(),
-      // color: primaryColor,
-      // themeMode: ThemeMode.system,
-      initialRoute: WrapperScreen.path,
-      smartManagement: SmartManagement.keepFactory,
-      getPages: AppPages.appPages,
+    return ScreenUtilInit(
+      designSize: const Size(390, 844),
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: "frontend ams mobile official",
+        home: WrapperScreen(),
+        initialRoute: WrapperScreen.path,
+        theme: ThemeData(
+          primaryColor: primaryColor,
+          primarySwatch: Colors.blue,
+        ),
+        smartManagement: SmartManagement.keepFactory,
+        getPages: AppPages.appPages,
+      ),
     );
   }
 }

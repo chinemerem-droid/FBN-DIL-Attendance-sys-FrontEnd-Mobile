@@ -12,8 +12,8 @@ class SwipeButtonNonActive extends StatelessWidget {
       innerColor: Colors.white,
       outerColor: primaryColor,
       text: 'Swipe right to check in',
-      textStyle: const TextStyle(fontSize: 15, color: Colors.white),
-      animationDuration: const Duration(milliseconds: 500),
+      textStyle: TextStyle(fontSize: 15, color: Colors.white),
+      animationDuration: Duration(milliseconds: 500),
       enabled: false,
     );
   }

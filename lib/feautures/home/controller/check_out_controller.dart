@@ -5,8 +5,10 @@ import 'package:frontend_ams_mobile_official/feautures/home/models/check_out_mod
 import 'package:frontend_ams_mobile_official/feautures/login/controller/log_in_controller.dart';
 import 'package:frontend_ams_mobile_official/helpers/functions/api_service_locator.dart';
 import 'package:frontend_ams_mobile_official/helpers/functions/navigation.dart';
+import 'package:frontend_ams_mobile_official/helpers/functions/utils.dart';
 import 'package:frontend_ams_mobile_official/helpers/services/storage_service.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../repository/check_out_repository.dart';
 
 class CheckOutController extends GetxController {
@@ -17,7 +19,7 @@ class CheckOutController extends GetxController {
 
   final CheckInController checkInController = Get.put(CheckInController());
 
-  var checkOutTime = ''.obs;
+  RxString checkOutTime = "----".obs;
 
   @override
   void onInit() {
@@ -26,23 +28,46 @@ class CheckOutController extends GetxController {
         "========================================CheckOutController initialized");
   }
 
+  void saveCheckInTime(String time) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('checkInTime', time);
+  }
+
+  void setCheckInTime(String time) {
+    checkOutTime.value = time;
+    saveCheckInTime(time);
+  }
+
+  void loadCheckInTime() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? checkInTimeString = prefs.getString('checkInTime');
+    if (checkInTimeString != null) {
+      checkOutTime.value = checkInTimeString;
+    }
+  }
+
   Future<void> checkOutUser() async {
+    String staffId = await _storage.getString('staff_ID');
+
     try {
       var checkoutData = CheckOutUserModel(
-        staff_ID: _authController.staff_ID.text,
+        staff_ID: staffId,
       );
       var result =
           await userCheckoutRepository.checkOut(checkoutData: checkoutData);
-      if (result.message != '') {
-        debugPrint(
-            '===============================================================================================value is  ${_authController.isCheckedIn.isTrue}');
-
-        _authController.isCheckedIn.isTrue;
+      if (result.isNotEmpty) {
+        _authController.isCheckedIn.value = false;
         await _storage.saveBoolean("isCheckedOut", true);
+        setCheckInTime(readableDate(result));
       }
     } catch (e) {
       debugPrint(e.toString());
     }
+
+    // void clearCheckInTime() async {
+    //   final prefs = await SharedPreferences.getInstance();
+    //   prefs.remove('checkInTime');
+    // }
   }
 
   void signOut() async {

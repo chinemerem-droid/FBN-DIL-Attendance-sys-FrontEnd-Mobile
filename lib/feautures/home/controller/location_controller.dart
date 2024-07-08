@@ -10,7 +10,8 @@ class LocationController extends GetxController {
   void onInit() async {
     super.onInit();
     await getLocationToUseApp();
-    debugPrint('========================================LocationController initialized');
+    debugPrint(
+        '========================================LocationController initialized');
   }
 
   Future<void> getLocationToUseApp() async {
@@ -28,13 +29,13 @@ class LocationController extends GetxController {
   }
 
   bool get isInRange {
-    return
-    //  latitude.value >= 6.5106367 &&
-    //     latitude.value <= 6.5107038 &&
-    //     longitude.value >= 3.3767505 &&
-    //     longitude.value <= 3.3770265;
+    return latitude.value >= 6.4106360 &&
+        latitude.value <= 6.6107040 &&
+        longitude.value >= 3.3667500 &&
+        longitude.value <= 3.3870265;
 
-     latitude.value <= 6.5535388 && longitude.value <= 3.3828311;
+    //  latitude.value <= 7.5535388 && longitude.value <= 4.3828311;
+    //  latitude.value <=  6.5535858 && longitude.value <=  6.5535568;
   }
 
   void updateLocation(double lat, double long) {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:frontend_ams_mobile_official/feautures/history/controller/history_controller.dart';
 import 'package:frontend_ams_mobile_official/feautures/home/controller/check_in_controller.dart';
 import 'package:frontend_ams_mobile_official/feautures/home/controller/check_out_controller.dart';
 import 'package:frontend_ams_mobile_official/feautures/home/controller/welcome_controller.dart';
@@ -11,6 +10,7 @@ import 'package:frontend_ams_mobile_official/helpers/widgets/info_warning_bar.da
 import 'package:frontend_ams_mobile_official/helpers/widgets/swipe_button_non_active.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../helpers/widgets/swipe_buttoton.dart';
 import '../../../helpers/constants/color.dart';
@@ -25,15 +25,20 @@ class WelcomePage extends StatelessWidget {
   final CheckOutController checkOutController = Get.put(CheckOutController());
   final CheckInController checkInController = Get.put(CheckInController());
   final LocationController locationController = Get.put(LocationController());
-  final HistoryController historyController = Get.put(HistoryController());
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context,
+        designSize: const Size(360, 690), minTextAdapt: true);
+
     return Scaffold(
         body: SafeArea(
       child: Obx(() => SingleChildScrollView(
-            padding:
-                const EdgeInsets.only(left: 35, right: 35, top: 35, bottom: 0),
+            padding: EdgeInsets.only(
+              left: 30.w,
+              right: 30.w,
+              top: 10.h,
+            ),
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
@@ -43,9 +48,11 @@ class WelcomePage extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          'Welcome back!',
+                          controller.getGreeting(),
                           style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.width * 0.06,
+                            fontWeight: FontWeight.w500,
+                            color: primaryColor,
+                            fontSize: 21.sp,
                           ),
                         ),
                       ],
@@ -54,13 +61,14 @@ class WelcomePage extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () {
+                            // (page: '/History');
                             // checkOutController.signOut();
                             push(page: '/History');
                           },
                           child: Container(
                               decoration: BoxDecoration(
                                   color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(10)),
+                                  borderRadius: BorderRadius.circular(10.r)),
                               child:
                                   SvgPicture.asset('assets/export-icon.svg')),
                         )
@@ -68,7 +76,7 @@ class WelcomePage extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 50),
+                SizedBox(height: 50.h),
                 Column(
                   children: [
                     Row(
@@ -78,30 +86,25 @@ class WelcomePage extends StatelessWidget {
                           DateFormat('EEEE dd, yyyy')
                               .format(controller.currentDate.value),
                           style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width * 0.06 * 0.7,
+                            fontSize: 17.sp,
                             color: primaryColor,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        FloatingActionButton(
-                          backgroundColor: Colors.white,
-                          onPressed: () {
+                        GestureDetector(
+                          onTap: () {
                             controller.subtractFromMonth();
                           },
-                          child: const Icon(
-                            Icons.arrow_back_ios,
-                            color: primaryColor,
-                          ),
+                          child: SvgPicture.asset('assets/backwardIcon.svg'),
                         ),
-                        Container(
-                          width: 150,
-                          height: 100,
+                        SizedBox(
+                          width: 150.w,
+                          height: 100.h,
                           child: Obx(() {
                             debugPrint(
                                 "MMM  ${controller.currentMonth.value} ");
@@ -109,7 +112,7 @@ class WelcomePage extends StatelessWidget {
                               controller: controller.monthController.value,
                               itemCount: controller.monthsInYear.length,
                               onPageChanged: (index) {
-                                controller.setCurrentMonth(index);
+                                controller.setCurrentMonth();
                               },
                               itemBuilder: (context, index) {
                                 return Center(
@@ -117,10 +120,7 @@ class WelcomePage extends StatelessWidget {
                                     controller.getMonthName(
                                         controller.monthsInYear[index]),
                                     style: TextStyle(
-                                      fontSize:
-                                          MediaQuery.of(context).size.width *
-                                              0.06 *
-                                              1.5,
+                                      fontSize: 30.sp,
                                       color: primaryColor,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -130,21 +130,17 @@ class WelcomePage extends StatelessWidget {
                             );
                           }),
                         ),
-                        FloatingActionButton(
-                          backgroundColor: Colors.white,
-                          onPressed: () {
+                        GestureDetector(
+                          onTap: () {
                             controller.addToMonth();
                           },
-                          child: const Icon(
-                            Icons.arrow_forward_ios,
-                            color: primaryColor,
-                          ),
+                          child: SvgPicture.asset('assets/forwardIcon.svg'),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 15.h),
                     SizedBox(
-                      height: 100,
+                      height: 100.h,
                       child: PageView.builder(
                         onPageChanged: (index) {
                           controller.onDaySelected(index);
@@ -152,105 +148,112 @@ class WelcomePage extends StatelessWidget {
                         controller: controller.pageController.value,
                         itemCount: controller.daysInaMonth.length,
                         itemBuilder: (context, index) {
-                          return Obx(
-                            () => Container(
+                          return Obx(() {
+                            return Container(
                               decoration: BoxDecoration(
                                 color: controller.daysInaMonth[index].day ==
                                         controller.currentDate.value.day
-                                    ? Colors.blueAccent.withOpacity(.2)
+                                    ? primaryColorAccent
                                     : Colors.transparent,
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(10.r),
                               ),
-                              width: 30,
+                              width: 50.w,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     controller.getDayName(
                                         controller.daysInaMonth[index]),
-                                    style: const TextStyle(
-                                        fontSize: 14, color: primaryColor),
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        color: controller
+                                                    .daysInaMonth[index].day ==
+                                                controller.currentDate.value.day
+                                            ? primaryColor
+                                            : unselectedColor),
                                   ),
                                   Text(
                                     controller.daysInaMonth[index].day
                                         .toString(),
-                                    style: const TextStyle(
-                                      fontSize: 24,
+                                    style: TextStyle(
+                                      fontSize: 24.sp,
                                       fontWeight: FontWeight.w700,
-                                      color: primaryColor,
+                                      color: controller
+                                                  .daysInaMonth[index].day ==
+                                              controller.currentDate.value.day
+                                          ? primaryColor
+                                          : unselectedColor,
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                          );
+                            );
+                          });
                         },
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: 20.h,
                 ),
                 const Divider(),
-                const SizedBox(height: 20),
-                locationController.isInRange
-                    ? SizedBox(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              children: [
-                                InfoBarVerified(
-                                    text1: "Location",
-                                    text2: 'Digital Innovation Lab'),
-                                const SizedBox(height: 10),
-                                InfoBar(
-                                    text1: "Check in Time",
-                                    text2: controller.currentTime.value),
-                                const SizedBox(height: 10),
-                                InfoBar(text1: "Check Out Time", text2: ''),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            SwipeButton(),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                          ],
-                        ),
-                      )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                SizedBox(height: 20.h),
+                SizedBox(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
                         children: [
-                          Column(
-                            children: [
-                              const InfoWaringBar(
-                                text1: "Location",
-                                text2: 'Unknown',
-                              ),
-                              const SizedBox(height: 10),
-                              InfoBar(text1: "Check in Time", text2: '---'),
-                              const SizedBox(height: 10),
-                              InfoBar(text1: "Check Out Time", text2: '---'),
-                            ],
+                          locationController.isInRange
+                              ? const InfoBarVerified(
+                                  text1: "Location",
+                                  text2: 'Digital Innovation Lab',
+                                )
+                              : const InfoWaringBar(
+                                  text1: 'Location', text2: 'Unknown'),
+                          SizedBox(height: 10.h),
+                          Obx(
+                            () => InfoBar(
+                                text1: "Check in Time",
+                                text2: locationController.isInRange
+                                    ? checkInController.checkInTime.value
+                                    : '---'),
                           ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const Text(
-                            'Oops! can’t check you in. Unrecognized Location',
-                            style: TextStyle(color: Colors.red),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const SwipeButtonNonActive(),
-                          const SizedBox(height: 20),
+                          SizedBox(height: 10.h),
+                          InfoBar(
+                              text1: "Check Out Time",
+                              text2: locationController.isInRange
+                                  ? checkOutController.checkOutTime.value
+                                  : '---'),
                         ],
-                      )
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      locationController.isInRange
+                          ? const Text(
+                              '',
+                            )
+                          : const Center(
+                              child: Text(
+                                'Oops! can’t check you in. Unrecognized Location',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      locationController.isInRange
+                          ? SwipeButton()
+                          : const SwipeButtonNonActive(),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           )),

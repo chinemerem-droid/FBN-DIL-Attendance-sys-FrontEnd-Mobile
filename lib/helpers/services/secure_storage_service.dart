@@ -1,5 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
- 
+
 class SecureStorageService {
   final _storage = const FlutterSecureStorage();
 
@@ -7,8 +7,8 @@ class SecureStorageService {
     await _storage.write(key: key, value: data);
   }
 
-  Future<void> getStringValue(String key) async {
-    await _storage.read(key: key) ?? "";
+  Future<String> getStringValue(String key) async {
+    return await _storage.read(key: key) ?? "";
   }
 
   Future<void> setBooleanValue(String key, bool data) async {

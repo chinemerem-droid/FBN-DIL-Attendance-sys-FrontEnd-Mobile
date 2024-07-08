@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend_ams_mobile_official/feautures/login/controller/log_in_controller.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../helpers/constants/color.dart';
-// import '../../../helpers/functions/navigation.dart';
 
 class LoginPage extends StatelessWidget {
   static const String path = '/Login';
@@ -22,7 +22,7 @@ class LoginPage extends StatelessWidget {
 
   Widget _buildUI({required BuildContext context}) {
     return SizedBox(
-      width: MediaQuery.sizeOf(context).width,
+      width: 1.sw, // Screen width
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -38,18 +38,18 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget _loginWelcomeText() {
-    return const Column(
+    return Column(
       children: [
         Text(
           'Hello.',
           style: TextStyle(
-              color: primaryColor, fontWeight: FontWeight.w600, fontSize: 50),
+              color: primaryColor, fontWeight: FontWeight.w600, fontSize: 50.sp),
         ),
         Text(
           'Lets check you in for the day',
           style: TextStyle(
             color: primaryColor,
-            fontSize: 15,
+            fontSize: 15.sp,
           ),
         ),
       ],
@@ -57,12 +57,16 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget _loginImage() {
-    return SvgPicture.asset('assets/welcomeImage.svg');
+    return SvgPicture.asset(
+      'assets/welcomeImage.svg',
+      width: 200.w,
+      height: 200.h,
+    );
   }
 
   Widget _loginTextField() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
+      padding: EdgeInsets.symmetric(horizontal: 30.w),
       child: Form(
         key: _loginFormKey,
         child: TextFormField(
@@ -77,21 +81,19 @@ class LoginPage extends StatelessWidget {
           decoration: InputDecoration(
             fillColor: _authController.isFocused.isTrue
                 ? Colors.white
-                : Color.fromARGB(255, 242, 242, 242),
+                : const Color.fromARGB(255, 242, 242, 242),
             filled: true,
             focusColor: Colors.white,
             labelText: 'Staff ID',
-            // labelStyle: const TextStyle(color: Colors.grey),
-            contentPadding: const EdgeInsets.only(left: 20, right: 20),
+            contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(50),
+              borderRadius: BorderRadius.circular(50.r),
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide: BorderSide(
                 color: Colors.transparent,
               ),
-              borderRadius: BorderRadius.circular(50),
-              // Border color when not focused
+              borderRadius: BorderRadius.circular(50.r),
             ),
           ),
           onTap: () {
@@ -109,24 +111,24 @@ class LoginPage extends StatelessWidget {
     debugPrint(" #####**** processing ${_authController.isProcessing.isTrue} ");
 
     return _authController.isProcessing.isTrue
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+            padding: EdgeInsets.symmetric(horizontal: 30.w),
             child: GestureDetector(
               onTap: () async {
                 if (_loginFormKey.currentState?.validate() ?? false) {
                   _authController.authenticateUser();
-                } // pushReplacement(page: '/Welcome');
+                }
               },
               child: Container(
                 decoration: BoxDecoration(
                     color: primaryColor,
-                    borderRadius: BorderRadius.circular(100)),
-                child: const Padding(
-                  padding: EdgeInsets.all(15),
+                    borderRadius: BorderRadius.circular(100.r)),
+                child: Padding(
+                  padding: EdgeInsets.all(15.h),
                   child: Center(
                     child: Text('Login',
-                        style: TextStyle(color: Colors.white, fontSize: 15)),
+                        style: TextStyle(color: Colors.white, fontSize: 15.sp)),
                   ),
                 ),
               ),

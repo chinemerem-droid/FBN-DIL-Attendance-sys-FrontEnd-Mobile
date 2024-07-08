@@ -5,7 +5,7 @@ import '../constants/color.dart';
 class InfoBar extends StatelessWidget {
   final String text1;
   final String text2;
-  InfoBar({super.key, required this.text1, required this.text2});
+  const InfoBar({super.key, required this.text1, required this.text2});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class InfoBar extends StatelessWidget {
                   Text(
                     text1,
                     style:
-                        TextStyle(color: const Color.fromARGB(255, 29, 29, 29)),
+                        const TextStyle(color: Color.fromARGB(255, 29, 29, 29)),
                   ),
                   Text(
                     text2,
