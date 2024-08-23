@@ -28,9 +28,6 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,
-        designSize: const Size(360, 690), minTextAdapt: true);
-
     return Scaffold(
         body: SafeArea(
       child: Obx(() => SingleChildScrollView(

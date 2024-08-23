@@ -70,7 +70,7 @@ class LoginPage extends StatelessWidget {
       child: Form(
         key: _loginFormKey,
         child: TextFormField(
-          controller: _authController.staff_ID,
+          controller: _authController.staffID,
           onSaved: (value) {},
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -90,7 +90,7 @@ class LoginPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(50.r),
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Colors.transparent,
               ),
               borderRadius: BorderRadius.circular(50.r),

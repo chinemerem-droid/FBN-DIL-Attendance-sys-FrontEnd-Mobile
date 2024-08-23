@@ -1,4 +1,3 @@
- 
 class Endpoints {
   //final StorageService _storage = StorageService();
 
@@ -9,4 +8,5 @@ class Endpoints {
   static const String checkin = '/User/Checkin';
   static const String checkout = '/Attendance/Checkout';
   static const String history = '/Attendance/AttendanceByID';
+  static const String addUser = '/User/AddUser';
 }

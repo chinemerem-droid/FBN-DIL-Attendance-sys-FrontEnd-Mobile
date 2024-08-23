@@ -68,8 +68,8 @@ class CheckInController extends GetxController {
   Future<void> checkInUser() async {
     try {
       Position position = await Geolocator.getCurrentPosition();
-      String staffId = await _storage.getString('staff_ID');
-      // String stID = await _storage.getString('staff_ID') ?? "";
+      String staffId = await _storage.getString('staffID');
+      // String stID = await _storage.getString('staffID') ?? "";
 
       debugPrint("******** STAFFID $staffId");
 
@@ -83,7 +83,7 @@ class CheckInController extends GetxController {
       var checkinData = CheckInUserModel(
         deviceID: deviceID.obs.toString(),
         deviceModel: deviceModel.obs.toString(),
-        staff_ID: staffId,
+        staffID: staffId,
         Latitude: position.latitude.toString(),
         Longitude: position.longitude.toString(),
       );

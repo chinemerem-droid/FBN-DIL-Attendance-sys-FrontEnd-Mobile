@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 
 const Color primaryColor = Color(0XFF345782);
+const Color textFieldColor = Color.fromARGB(255, 244, 241, 241);
 
 const Color primaryColorAccent = Color.fromRGBO(227, 236, 249, 1);
 
 // const Color secondaryColor = Color.fromARGB(255, 255, 255, 255);
 const Color secondaryColor = Colors.transparent;
 
-const Color unselectedColor = Color.fromARGB(255, 167, 182, 202);
+const Color unselectedColor = Color.fromARGB(255, 245, 245, 245);
 
 const Color tertiaryColor = Color.fromARGB(255, 173, 171, 171);
+
+
 
                       // child: PageView.builder(
                       //   onPageChanged: (index) {

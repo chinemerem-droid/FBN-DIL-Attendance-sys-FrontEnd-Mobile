@@ -256,7 +256,7 @@ class WelcomeController extends GetxController {
 
   void checkInStatus() async {
     Position position = await Geolocator.getCurrentPosition();
-    String staffId = await _storage.getString('staff_ID');
+    String staffId = await _storage.getString('staffID');
 
     debugPrint(
         '=============================DEVICE ID : ${_authController.deviceID}');

@@ -1,19 +1,19 @@
 import 'package:dio/dio.dart';
+import 'package:frontend_ams_mobile_official/feautures/register/model/add_user_model.dart';
 import 'package:frontend_ams_mobile_official/helpers/constants/app_constants.dart';
 import 'package:frontend_ams_mobile_official/helpers/functions/dio_client.dart';
 import 'package:frontend_ams_mobile_official/helpers/functions/endpoint.dart';
 
-class HistoryService {
+class AddUserService {
   final DioClient dioClient;
 
-  HistoryService({required this.dioClient});
+  AddUserService({required this.dioClient});
 
-  //getHistory
-  Future<Response> getUserHistory({required String staffId}) async {
+  Future<Response> addUser({required AddUserModel addUserModelData}) async {
     try {
       final Response response = await dioClient.makeRequest(
-          Endpoints.history, RequestMethod.post,
-          data: {'staffID': staffId});
+          Endpoints.addUser, RequestMethod.post,
+          data: addUserModelData);
       return response;
     } catch (e) {
       rethrow;

@@ -13,7 +13,7 @@ class CheckOutRepository extends GetxController {
           await checkOutService.checkOut(checkoutData: checkoutData);
       if (response.statusCode == 200) {
         String checkOut = response.data["exitTime"];
-        debugPrint('checkOut ${checkOut}');
+        debugPrint('checkOut $checkOut');
         return checkOut;
       } else {
         return '';

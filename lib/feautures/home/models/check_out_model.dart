@@ -3,13 +3,13 @@ import '../../../helpers/constants/app_constants.dart';
 class CheckOutUserModel {
   String? message;
   String? token;
-  String? staff_ID;
+  String? staffID;
 
-   CheckOutUserModel({
+  CheckOutUserModel({
     this.message,
     this.token,
-    this.staff_ID,
-   });
+    this.staffID,
+  });
 
   CheckOutUserModel.fromJson(DynamicMap json) {
     message = json['message'];
@@ -17,9 +17,9 @@ class CheckOutUserModel {
   }
 
   DynamicMap toJson() {
-    final DynamicMap data =   DynamicMap();
-    data['staff_ID'] = staff_ID;
-     return data;
+    final DynamicMap data = DynamicMap();
+    data['staffID'] = staffID;
+    return data;
   }
 
   @override

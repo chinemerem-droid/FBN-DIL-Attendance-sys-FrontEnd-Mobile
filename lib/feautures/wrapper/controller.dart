@@ -31,7 +31,7 @@ class WrapperController extends GetxController {
       await _storage.clearOldData();
       await pref.clear();
       // pref.setBool('first_run', false);
-      pushReplacement(page: '/Login');
+      pushReplacement(page: '/Register');
     } else if (_isAuthenticated) {
       // even if the user is authenticated he/ she still has to login
       pushReplacement(page: '/Welcome');

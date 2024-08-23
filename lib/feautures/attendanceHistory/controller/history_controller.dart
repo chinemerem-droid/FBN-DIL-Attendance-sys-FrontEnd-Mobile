@@ -18,7 +18,7 @@ class HistoryController extends GetxController {
   }
 
   void fetchHistory() async {
-    String staffId = await _storage.getString('staff_ID');
+    String staffId = await _storage.getString('staffID');
 
     isLoading.value = true;
     try {

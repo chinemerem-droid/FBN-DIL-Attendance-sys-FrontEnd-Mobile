@@ -22,7 +22,7 @@ class LogInController extends GetxController {
   RxBool isFocused = false.obs;
   DateTime now = DateTime.now();
 
-  TextEditingController staff_ID = TextEditingController();
+  TextEditingController staffID = TextEditingController();
   RxString deviceID = ''.obs;
   RxString deviceModel = ''.obs;
 
@@ -35,7 +35,7 @@ class LogInController extends GetxController {
   }
 
   void initDependencies() async {
-    staff_ID = TextEditingController();
+    staffID = TextEditingController();
   }
 
   @override
@@ -77,14 +77,12 @@ class LogInController extends GetxController {
       var loginData = LoginUserModel(
           deviceID: deviceID.value,
           deviceModel: deviceModel.value,
-          staff_ID: staff_ID.text);
+          staffID: staffID.text);
       var result = await userRepository.logIn(loginData: loginData);
       if (result.token != '') {
         isProcessing.value = false;
         await _storage.saveString('token', result.token!);
-        await _storage.saveString('staff_ID', staff_ID.text);
-    
-
+        await _storage.saveString('staffID', staffID.text);
         await _storage.saveBoolean('isLoggedIn', true);
         pushReplacement(page: '/Welcome');
       }

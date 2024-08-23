@@ -28,9 +28,15 @@ class MyApp extends StatelessWidget {
         home: WrapperScreen(),
         initialRoute: WrapperScreen.path,
         theme: ThemeData(
-          primaryColor: primaryColor,
-          primarySwatch: Colors.blue,
-        ),
+          scaffoldBackgroundColor: Colors.white,
+            primaryColor: primaryColor,
+             appBarTheme: const AppBarTheme(
+              backgroundColor: Colors.transparent,
+            ),
+            colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: primaryColor, // Primary color for app bar, buttons, etc.
+         )),
+            
         smartManagement: SmartManagement.keepFactory,
         getPages: AppPages.appPages,
       ),

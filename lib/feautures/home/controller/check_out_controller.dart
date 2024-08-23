@@ -47,11 +47,11 @@ class CheckOutController extends GetxController {
   }
 
   Future<void> checkOutUser() async {
-    String staffId = await _storage.getString('staff_ID');
+    String staffId = await _storage.getString('staffID');
 
     try {
       var checkoutData = CheckOutUserModel(
-        staff_ID: staffId,
+        staffID: staffId,
       );
       var result =
           await userCheckoutRepository.checkOut(checkoutData: checkoutData);

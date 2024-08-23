@@ -1,6 +1,7 @@
 import 'package:frontend_ams_mobile_official/feautures/attendanceHistory/screen/history_page.dart';
  import 'package:frontend_ams_mobile_official/feautures/home/screen/welcome_page.dart';
 import 'package:frontend_ams_mobile_official/feautures/login/screen/login_page.dart';
+import 'package:frontend_ams_mobile_official/feautures/register/screen/register_screen.dart';
 import 'package:get/get.dart';
 
 import '../../feautures/wrapper/wrapper_screen.dart';
@@ -22,6 +23,10 @@ class AppPages {
     GetPage(
       name: HistoryPage.path,
       page: () => HistoryPage(),
+    ),
+    GetPage(
+      name: RegisterScreen.path,
+      page: () => RegisterScreen(),
     ),
   ];
 }

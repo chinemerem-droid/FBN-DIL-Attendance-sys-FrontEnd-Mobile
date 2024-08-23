@@ -18,7 +18,7 @@ class Userattendancehistory {
 
   factory Userattendancehistory.fromJson(Map<String, dynamic> json) {
     return Userattendancehistory(
-      staffID: json['staff_ID'],
+      staffID: json['staffID'],
       date: json['date'] != null ? DateTime.parse(json['date']) : null,
       month: json['month'],
       year: json['year'],
@@ -31,7 +31,7 @@ class Userattendancehistory {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['staff_ID'] = staffID;
+    data['staffID'] = staffID;
     data['date'] = date?.toIso8601String();
     data['month'] = month;
     data['year'] = year;

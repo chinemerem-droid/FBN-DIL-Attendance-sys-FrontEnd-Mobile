@@ -12,6 +12,9 @@ import 'package:frontend_ams_mobile_official/feautures/home/service/check_out_se
 import 'package:frontend_ams_mobile_official/feautures/login/controller/log_in_controller.dart';
 import 'package:frontend_ams_mobile_official/feautures/login/repository/Login_repository.dart';
 import 'package:frontend_ams_mobile_official/feautures/login/service/login_service.dart';
+import 'package:frontend_ams_mobile_official/feautures/register/controller/register_controller.dart';
+import 'package:frontend_ams_mobile_official/feautures/register/repository/add_user_repository.dart';
+import 'package:frontend_ams_mobile_official/feautures/register/service/add_user_service.dart';
 import 'package:get_it/get_it.dart';
 import '../../feautures/attendanceHistory/repository/history_repository.dart';
 import 'dio_client.dart';
@@ -73,6 +76,17 @@ Future<void> apiServiceLocator() async {
 
     getIt.registerSingleton(HistoryController());
     debugPrint('HISTORY CONTROLLER registered');
+
+    //============================================================================================
+
+    getIt.registerSingleton(AddUserService(dioClient: getIt<DioClient>()));
+  debugPrint('ADD USER SERVICE registered');
+
+    getIt.registerSingleton(AddUserRepository(getIt.get<AddUserService>()));
+    debugPrint('ADD USER REPOSITORY registered');
+
+    getIt.registerSingleton(RegisterController());
+    debugPrint('REGISTER CONTROLLER registered');
   } catch (e) {
     debugPrint('Error during registration: $e');
   }

@@ -1,30 +1,37 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:frontend_ams_mobile_official/helpers/constants/app_constants.dart';
 
-class LoginUserModel {
+class AddUserModel {
   String? message;
   String? token;
+  String? fullName;
+  String? email;
+  String? phoneNumber;
   String? staffID;
-  String? deviceID;
-  String? deviceModel;
+  String? labRole;
 
-  LoginUserModel(
-      {this.message,
-      this.token,
-      this.staffID,
-      this.deviceID,
-      this.deviceModel});
+  AddUserModel({
+    this.message,
+    this.token,
+    this.fullName,
+    this.email,
+    this.phoneNumber,
+    this.staffID,
+    this.labRole,
+  });
 
-  LoginUserModel.fromJson(Map<String, dynamic> json) {
+  AddUserModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     token = json['token'];
   }
 
   DynamicMap toJson() {
     final DynamicMap data = DynamicMap();
+    data['fullName'] = fullName;
+    data['email'] = email;
+    data['phoneNumber'] = phoneNumber;
     data['staffID'] = staffID;
-    data['deviceID'] = deviceID;
-    data['deviceModel'] = deviceModel;
+    data['labRole'] = labRole;
     return data;
   }
 
